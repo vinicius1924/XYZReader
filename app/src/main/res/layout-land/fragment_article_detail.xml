@@ -119,7 +119,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/article_body"
-                        tools:text="jhajskdhjh ajdh asjdhsajhdaskjdh askjh askjh "/>
+                        tools:text="jhajskdhjh ajdh asjdhsajhdaskjdh askjh askjh"
+                        android:textColor="?android:attr/textColorPrimary"/>
                     </LinearLayout>
 
                 </LinearLayout>
