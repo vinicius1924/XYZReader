@@ -41,8 +41,8 @@ public class UpdaterService extends IntentService {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null || !ni.isConnected()) {
-            sendStickyBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_NO_INTERNET, true));
-            Log.w(TAG, "Not online, not refreshing.");
+            sendStickyBroadcast(new Intent(BROADCAST_ACTION_STATE_CHANGE).putExtra(EXTRA_REFRESHING, false).putExtra(EXTRA_NO_INTERNET, true));
+
             return;
         }
 

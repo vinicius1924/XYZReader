@@ -1,0 +1,11 @@
+<resources>
+    <!-- detail -->
+    <dimen name="detail_photo_height">224dp</dimen>
+    <dimen name="detail_inner_horiz_margin">64dp</dimen>
+    <dimen name="card_view_margin">44dp</dimen>
+    <dimen name="expandedTitleMarginBottom">53dp</dimen>
+    <dimen name="expandedTitleMarginStart">108dp</dimen>
+    <dimen name="detail_app_bar_height">240dp</dimen>
+    <dimen name="cardview_elevation">2dp</dimen>
+
+</resources>

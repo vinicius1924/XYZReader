@@ -1,5 +1,7 @@
 package com.example.xyzreader.ui;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,13 +9,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -22,8 +29,11 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
@@ -86,10 +96,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    private void refresh() {
-        startService(new Intent(this, UpdaterService.class));
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -103,7 +109,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         unregisterReceiver(mRefreshingReceiver);
     }
 
-    private boolean mIsRefreshing = false;
+    private boolean mIsRefreshing = true;
     private boolean mNoInternet = false;
 
     private BroadcastReceiver mRefreshingReceiver = new BroadcastReceiver() {
@@ -117,6 +123,21 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         }
     };
+
+    private void updateRefreshingUI()
+    {
+        mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        refresh();
+    }
+
+    private void refresh() {
+        startService(new Intent(this, UpdaterService.class));
+    }
 
     private void showNoInternetMessage()
     {
@@ -138,19 +159,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    private void updateRefreshingUI() {
-        mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        //showProgressBar();
         return ArticleLoader.newAllArticlesInstance(this);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        //hideProgressBar();
         Adapter adapter = new Adapter(cursor);
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
@@ -163,12 +178,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mRecyclerView.setAdapter(null);
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        refresh();
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
@@ -210,7 +219,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             Date publishedDate = parsePublishedDate();
@@ -233,6 +242,58 @@ public class ArticleListActivity extends AppCompatActivity implements
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+
+            ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader().get(mCursor.getString(ArticleLoader.Query
+                    .THUMB_URL), new ImageLoader.ImageListener()
+            {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b)
+                {
+                    final Bitmap bitmap = imageContainer.getBitmap();
+                    if(bitmap != null)
+                    {
+                        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener()
+                        {
+                            @Override
+                            public void onGenerated(Palette palette)
+                            {
+                                holder.thumbnailView.setImageBitmap(bitmap);
+
+                                ColorDrawable[] colorBackground = {(ColorDrawable) ContextCompat.getDrawable(ArticleListActivity.this, R.color.article_title),
+                                        new ColorDrawable(palette.getDarkMutedColor(ContextCompat.getColor(ArticleListActivity.this, R.color.article_title)))};
+                                TransitionDrawable transitionBackground = new TransitionDrawable(colorBackground);
+
+                                holder.contentBackground.setBackground(transitionBackground);
+
+                                transitionBackground.startTransition(DynamicHeightNetworkImageView.FADE_IN_TIME_MS);
+
+                                ObjectAnimator.ofObject(holder.titleView, // Object to animating
+                                        "textColor", // Property to animate
+                                        new ArgbEvaluator(), // Interpolation function
+                                        ContextCompat.getColor(ArticleListActivity.this, R.color.abc_primary_text_material_light), // Start color
+                                        ContextCompat.getColor(ArticleListActivity.this, R.color.article_title) // End color
+                                ).setDuration(DynamicHeightNetworkImageView.FADE_IN_TIME_MS) // Duration in milliseconds
+                                        .start();
+
+
+                                ObjectAnimator.ofObject(holder.subtitleView, // Object to animating
+                                        "textColor", // Property to animate
+                                        new ArgbEvaluator(), // Interpolation function
+                                        ContextCompat.getColor(ArticleListActivity.this, R.color.abc_secondary_text_material_dark), // Start color
+                                        ContextCompat.getColor(ArticleListActivity.this, R.color.article_byline) // End color
+                                ).setDuration(DynamicHeightNetworkImageView.FADE_IN_TIME_MS) // Duration in milliseconds
+                                        .start();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError volleyError)
+                {
+
+                }
+            });
         }
 
         @Override
@@ -245,12 +306,14 @@ public class ArticleListActivity extends AppCompatActivity implements
         public DynamicHeightNetworkImageView thumbnailView;
         public TextView titleView;
         public TextView subtitleView;
+        public LinearLayout contentBackground;
 
         public ViewHolder(View view) {
             super(view);
             thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+            contentBackground = (LinearLayout) view.findViewById(R.id.contentBackground);
         }
     }
 }

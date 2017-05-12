@@ -190,14 +190,14 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
 
 			if(toolbar != null)
 			{
-				if(mIsCard)
-				{
-					titleTextView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
-				}
-				else
-				{
+//				if(mIsCard)
+//				{
+//					titleTextView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+//				}
+//				else
+//				{
 					toolbar.setTitle(mCursor.getString(ArticleLoader.Query.TITLE));
-				}
+//				}
 			}
 
 			bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br " +
@@ -240,10 +240,10 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
 		}
 		else
 		{
-			if(mIsCard)
-			{
-				titleTextView.setText("");
-			}
+//			if(mIsCard)
+//			{
+//				titleTextView.setText("");
+//			}
 			bylineView.setText("");
 			bodyView.setText("");
 		}

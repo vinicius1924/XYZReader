@@ -22,6 +22,7 @@
             app:expandedTitleMargin="@dimen/activity_horizontal_margin"
             app:expandedTitleMarginBottom="@dimen/expanded_toolbar_title_margin_bottom"
             app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTitleTextAppearance"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTitleTextAppearance"
             android:fitsSystemWindows="true">
 
             <FrameLayout
@@ -55,7 +56,8 @@
                         style="?android:attr/textAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#8fff" />
+                        android:textColor="@color/article_byline"
+                        tools:text="bla bla bla"/>
 
                 </LinearLayout>
 
@@ -117,6 +119,8 @@
         app:fabSize="normal"
         app:layout_anchor="@id/appBar"
         app:layout_anchorGravity="bottom|right|end"
-        android:clickable="true"/>
+        android:clickable="true"
+        app:elevation="@dimen/fab_elevation"
+        app:pressedTranslationZ="@dimen/fab_press_translation_z"/>
 
 </android.support.design.widget.CoordinatorLayout>
