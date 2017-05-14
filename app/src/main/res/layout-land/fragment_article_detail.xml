@@ -21,9 +21,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="@dimen/expandedTitleMarginStart"
+            app:expandedTitleMarginEnd="@dimen/expandedTitleMarginStart"
             app:expandedTitleMarginBottom="@dimen/expandedTitleMarginBottom"
             app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTitleTextAppearance"
-            app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTitleTextAppearance"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutCollapsedTitleTextAppearance"
             android:fitsSystemWindows="true">
 
             <ImageView

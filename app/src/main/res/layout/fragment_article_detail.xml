@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/detail_app_bar_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:stateListAnimator="@animator/appbar_elevation">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -19,10 +20,11 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMargin="@dimen/activity_horizontal_margin"
+            app:expandedTitleMarginStart="@dimen/activity_horizontal_margin"
+            app:expandedTitleMarginEnd="@dimen/activity_horizontal_margin"
             app:expandedTitleMarginBottom="@dimen/expanded_toolbar_title_margin_bottom"
             app:expandedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTitleTextAppearance"
-            app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutExpandedTitleTextAppearance"
+            app:collapsedTitleTextAppearance="@style/CollapsingToolbarLayoutCollapsedTitleTextAppearance"
             android:fitsSystemWindows="true">
 
             <FrameLayout
