@@ -12,6 +12,7 @@
         android:layout_height="@dimen/detail_app_bar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:elevation="@dimen/toolbar_elevation"
         android:stateListAnimator="@animator/appbar_elevation">
 
         <android.support.design.widget.CollapsingToolbarLayout
