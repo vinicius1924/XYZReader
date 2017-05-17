@@ -23,6 +23,7 @@ import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -140,6 +141,19 @@ public class ArticleDetailFragment extends Fragment implements LoaderManager.Loa
 		bindViews();
 
 		return mRootView;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch(item.getItemId())
+		{
+			/* Este é o id do back button */
+			case android.R.id.home:
+				getActivity().onBackPressed();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private Date parsePublishedDate()

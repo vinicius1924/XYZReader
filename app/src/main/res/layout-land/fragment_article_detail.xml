@@ -77,7 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin"
+                app:elevation="@dimen/toolbar_elevation"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -145,6 +146,6 @@
         app:layout_anchorGravity="bottom|right|end"
         android:clickable="true"
         app:elevation="@dimen/fab_elevation"
-        app:pressedTranslationZ="@dimen/fab_press_translation_z"/>
+        android:stateListAnimator="@animator/fab_elevation"/>
 
 </android.support.design.widget.CoordinatorLayout>

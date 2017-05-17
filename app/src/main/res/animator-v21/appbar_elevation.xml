@@ -3,9 +3,11 @@
                xmlns:tools="http://schemas.android.com/tools"
                tools:ignore="PrivateResource">
     <item>
-        <objectAnimator
-            android:propertyName="elevation"
-            android:valueTo="@dimen/toolbar_elevation"
-            android:valueType="floatType"/>
+        <set>
+            <objectAnimator
+                android:propertyName="elevation"
+                android:valueTo="@dimen/toolbar_elevation"
+                android:valueType="floatType"/>
+        </set>
     </item>
 </selector>
