@@ -3,6 +3,7 @@
 /captures
 app/build
 volley/build
+.externalNativeBuild
 
 # built application files
 *.apk
