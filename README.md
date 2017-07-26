@@ -18,11 +18,11 @@ Open Android Studio and click: File -> Open and choose the build.gradle file ins
 
 ## Built With
 
-* [OkHttp](https://github.com/google/gson) - An HTTP & HTTP/2 client for Android and Java applications
+* [OkHttp](http://square.github.io/okhttp/) - An HTTP & HTTP/2 client for Android and Java applications
 * [volley](https://github.com/google/volley) - Used to make network requests for images
 
 ## Images
 
-![Most Popular Movies](/images/1.png)
-![Movie Details](/images/2.png)
-![Users Reviews](/images/3.png)
+![First Image](/images/1.png)
+![Second Image](/images/2.png)
+![Third Image](/images/3.png)
